@@ -25,48 +25,48 @@
             <li data-target="log">Login</li>
         </ul>
         <div>
-            <form action="" method="POST" class="w-full py-5 px-5 md:grid md:grid-cols-2 md:gap-4" id="reg">  
-                <div>
+            <form action="" method="POST" class="w-full py-5 px-5 md:grid md:grid-cols-2 gap-4" id="reg">  
+                <div class="mb-2">
                     <div>
                         <label>First name</label>
                     </div>
                     <input class="w-full" type="text" name="firstname" placeholder="John" id="firstname" pattern="^[a-zA-Z]{2,}" required>
                 </div>
-                <div>
+                <div class="mb-2">
                     <div>
                         <label>Last name</label>
                     </div>
                     <input  class="w-full" type="text" name="lastname" placeholder="Doe" id="lastname" pattern="^[a-zA-Z]{2,}" required>
                 </div>
     
-                <div class="col-span-2">
+                <div class="col-span-2 mb-2">
                     <div>
                         <label>Birthdate</label>
                     </div>
                     <input class="w-full" type="date" name="birthdate" id="birthdate" required>
                 </div>
     
-                <div class="col-span-2">
+                <div class="col-span-2 mb-2">
                     <div>
                         <label>Address</label>
                     </div>
                     <input class="w-full" type="text" name="address" id="address" placeholder="50 rue de tremeuge" pattern="[0-9a-zA-Z]{20,}" required>
                 </div>
     
-                <div>
+                <div class="mb-2">
                     <div>
                         <label>City</label>
                     </div>
                     <input class="w-full" type="text" name="country" id="city" placeholder="Talence"  pattern="[a-zA-Z]{3,}" required>
                 </div>
-                <div>
+                <div class="mb-2">
                     <div>
                         <label>Zipcode</label>
                     </div>
                     <input class="w-full" type="text" name="zipcode" placeholder="33400" id="zipcode" pattern="^[0-9]{5}">
                 </div>
     
-                <div class="col-span-2">
+                <div class="col-span-2 mb-2">
                     <div>
                         <label>Gender</label>
                     </div>
@@ -78,27 +78,27 @@
                     </select>
                 </div>
     
-                <div class="col-span-2">
+                <div class="col-span-2 mb-2">
                     <div>
                         <label>Phone</label>
                     </div>
                     <input class="w-full" type="tel" name="phone" id="phone" placeholder="0612345678" pattern="^[0-9]{10}">
                 </div>
     
-                <div class="col-span-2">
+                <div class="col-span-2 mb-2">
                     <div>
                         <label>Mail</label> 
                     </div>
                     <input class="w-full" type="email" name="email" placeholder="email@address.com" id="email" pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$">
                 </div>
     
-                <div>
+                <div class="mb-2">
                     <div>
                         <label>Password</label>
                     </div>
                     <input class="w-full" type="password" name="password" id="password" placeholder="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" required>
                 </div>
-                <div>
+                <div class="mb-2">
                     <div>
                         <label>Password confirmation</label>
                     </div>
