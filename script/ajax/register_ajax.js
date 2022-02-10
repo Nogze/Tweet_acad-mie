@@ -1,4 +1,5 @@
 $("#reg").on("submit", function(e){
+
     let form = new FormData($(this)[0]);
 
     let json_arr = JSON.stringify({
@@ -17,7 +18,7 @@ $("#reg").on("submit", function(e){
 
     $.ajax({
         type: "post",
-        url: form.attr("action"),
+        url: "php/register.php",
         data: {
             data:json_arr,
         },
@@ -27,4 +28,5 @@ $("#reg").on("submit", function(e){
             alert(response)
         }
     });
+    // e.preventDefault()
 })
