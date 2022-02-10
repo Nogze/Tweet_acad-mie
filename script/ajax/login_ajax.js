@@ -7,12 +7,13 @@ $("#log").on("submit", function(e){
     });
 
     $.ajax({
-        type: "post",
+        type: "POST",
         url: form.attr("action"),
         data: {
             info:json_arr,
         },
-        // dataType: "JSON",
+        contentType: "application/json; charset=utf-8",
+        dataType: "JSON",
         success: function (response) {
             console.log(response)
             alert(response)
