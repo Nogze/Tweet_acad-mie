@@ -21,10 +21,11 @@ $("#reg").on("submit", function(e){
         data: {
             data:json_arr,
         },
-        // dataType: "JSON",
+        dataType: "JSON",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         success: function (response) {
-            console.log(response)
             alert(response)
         }
     });
+    e.preventDefault()
 })
