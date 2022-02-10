@@ -1,5 +1,6 @@
 <?php
- try {
+
+try {
     $pdo = new PDO('mysql:host=localhost;dbname=twitter_academie;charset=utf8', 'root');
 } catch (Exception $e) {
     echo "Can't connect to database :" . $e->getMessage();
@@ -15,12 +16,12 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
         $res = $sth->fetchAll();
 
         if ($res["id"]->rowCount() == 1){
-            // TODO
+            header("location:../page/home.html");
         } else {
-            // TODO
+            header("location:../authentication.html");
         }
-
     } catch (Exception $e) {
         echo $e->getMessage();
     }
+
 }
