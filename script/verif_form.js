@@ -42,7 +42,7 @@ $(document).ready(function () {
     inputValid($("#password"))
     inputValid($("#passwordConfirm"))
 
-    $('form').submit(function (e) {
+    $('#reg').submit(function (e) {
 
         if(
             inputValid($("#firstname")) &&
@@ -59,7 +59,7 @@ $(document).ready(function () {
             ) {
             console.log("OUI")
         } else {
-            e.prenventDefault();
+            e.preventDefault();
             console.log("NON")
         }
     })

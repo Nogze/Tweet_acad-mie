@@ -1,45 +1,83 @@
-/* All */
+/* Body */
+body{
+    padding-top: 2vh;
+    background-color: rgb(88, 88, 88);
 
-li{
-    list-style-type: none;
-    padding: .7rem;
 }
-
-/* header */
-header{
-    padding: 2vh 0;
+/* NAV */
+nav{
+    width: 20%;
+}
+nav ul {
     text-align: center;
 }
+li:hover{
+    background-color:rgb(211, 211, 211);
+    margin: auto;
+    width: 90px;
+    border-radius: 10px;
+}
+
 
 /* MAIN */
 main{
-    padding: 0 20vw;
+    width: 80%;
 }
-li:hover{
+/* TWEET INPUT */
+#tweet{
+    border-bottom: 1px solid gray;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 80%;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#img-container{
+    width: 80%;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#img-container img{
+    height: 30px;
+    width: auto;
+    margin: 5px;
+    display: block;
+}
+#option{
+    width: 80%;
+    margin: auto;
+
+}
+[data-placeholder]:empty:before{
+    content: attr(data-placeholder);
+    color: #888;
+    font-style: italic;
+  }
+*:focus, *:focus{
+    outline: none;
+}
+#btn-tweet{
     background-color: #1da1f2;
+    border-radius: 10px;
+    padding: 2% 4%;
     color: white;
+    margin-left: auto;
 }
-li:last-child{
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+/* icone */
+input[type=file] {
+    display: none;
 }
-li:first-child{
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    border: 1px solid black;
+
+/* Left */
+#search{
+    margin: auto;
 }
-form{
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-input, button, select{
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 0 .4rem!important;
+#search input{
+    border: rgb(204, 204, 204) solid 1px;
+    background-color: rgb(204, 204, 204);
+    border-radius: 20px;
+    padding: 1% 2%;
 }
