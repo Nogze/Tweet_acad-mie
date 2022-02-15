@@ -1,6 +1,7 @@
-$("#reg").on("submit", function(e){
-    let form = new FormData($(this)[0]);
+$("#reg").on("submit", function (e) {
+    e.preventDefault()
 
+    let form = new FormData($(this)[0])
     let json_arr = JSON.stringify({
         'firstname': form.get('firstname'),
         'lastname': form.get('lastname'),
@@ -16,16 +17,40 @@ $("#reg").on("submit", function(e){
     });
 
     $.ajax({
-        type: "post",
-        url: form.attr("action"),
+        type: "POST",
+        url: "php/register.php",
         data: {
-            data:json_arr,
+            data: json_arr,
         },
-        dataType: "JSON",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+
         success: function (response) {
-            alert(response)
+            var parsedResponse = JSON.parse(response)
+
+            if (parsedResponse['email'] == 0) {
+                $('#email').css('border', '#018749 3px solid')
+                $('#email_notValid').css('display', 'none')
+            }
+            else {
+                $('#email').css('border', '#B31B1B 3px solid')
+                $('#email_notValid').css('display', 'block')
+            }
+            if (parsedResponse['phone'] == 0) {
+                $('#phone').css('border', '#018749 3px solid')
+                $('#phone_notValid').css('display', 'none')
+            }
+            else {
+                $('#phone').css('border', '#B31B1B 3px solid')
+                $('#phone_notValid').css('display', 'block')
+            }
+            if (parsedResponse['msg'] == 'success') {
+                $('#email').css('border', '#018749 3px solid')
+                $('#email_notValid').css('display', 'none')
+                $('#phone').css('border', '#018749 3px solid')
+                $('#phone_notValid').css('display', 'none')
+                $('#successful-registration').css('display', 'block')
+
+            }
         }
     });
-    e.preventDefault()
 })

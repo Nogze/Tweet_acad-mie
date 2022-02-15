@@ -1,7 +1,7 @@
 $("#log").on("submit", function(e){
     e.preventDefault();
     let form = new FormData($(this)[0]);
-    
+
     let json_arr = JSON.stringify({
         'email': form.get('email'),
         'password': form.get('password'),
