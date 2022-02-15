@@ -1,4 +1,5 @@
 $("#log").on("submit", function(e){
+    e.preventDefault();
     let form = new FormData($(this)[0]);
 
     let json_arr = JSON.stringify({
@@ -8,20 +9,19 @@ $("#log").on("submit", function(e){
 
     $.ajax({
         type: "POST",
-        url: form.attr("action"),
+        url: "php/login.php",
         data: {
-            info:json_arr,
+            data:json_arr,
         },
-        contentType: "application/json; charset=utf-8",
-        dataType: "JSON",
-        success: function (response) {
-            console.log(response)
-            alert(response)
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success: function (response, textStatus, jqXHR) {
+            if (response == true) {
+                window.location.href = "./pages/home.html";
+            }
         },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(ajaxOptions);
-            alert(thrownError);
-          }
+        error: function (xhr) {
+            alert(xhr.responseText);
+            alert(xhr.responseText.Message);
+        }
     });
 })

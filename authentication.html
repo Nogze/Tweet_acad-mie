@@ -27,18 +27,18 @@
             <li data-target="log">Login</li>
         </ul>
         <div>
-            <form action="php/register.php" method="POST" class="w-full py-5 px-5 md:grid md:grid-cols-2 gap-4" id="reg">
+            <form class="w-full py-5 px-5 md:grid md:grid-cols-2 gap-4" id="reg">
                 <div class="mb-2">
                     <div>
                         <label>First name</label>
                     </div>
-                    <input class="w-full" type="text" name="firstname" placeholder="John" id="firstname" pattern="{2,}" required>
+                    <input class="w-full" type="text" name="firstname" placeholder="John" id="firstname" pattern="[\w]{2,}"" required>
                 </div>
                 <div class="mb-2">
                     <div>
                         <label>Last name</label>
                     </div>
-                    <input  class="w-full" type="text" name="lastname" placeholder="Doe" id="lastname" pattern="{2,}" required>
+                    <input  class="w-full" type="text" name="lastname" placeholder="Doe" id="lastname" pattern="[\w]{2,}" required>
                 </div>
 
                 <div class="col-span-2 mb-2">
@@ -91,39 +91,39 @@
                     <div>
                         <label>Mail</label>
                     </div>
-                    <input class="w-full" type="email" name="email" placeholder="email@address.com" id="email" pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$">
+                    <input class="w-full" type="email" name="email" placeholder="email@address.com" id="email" pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" autocomplete="username" required>
                 </div>
 
                 <div class="mb-2">
                     <div>
                         <label>Password</label>
                     </div>
-                    <input class="w-full" type="password" name="password" id="password" placeholder="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" required>
+                    <input class="w-full" type="password" name="password" id="password" placeholder="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" autocomplete="new-password" required>
                 </div>
                 <div class="mb-2">
                     <div>
                         <label>Password confirmation</label>
                     </div>
-                    <input class="w-full" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" required>
+                    <input class="w-full" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" autocomplete="new-password" required>
                 </div>
 
                 <div class="text-center col-span-2">
                     <button>Send</button>
                 </div>
             </form>
-            <form action="php/login.php" method="POST" class="w-full py-5 px-5 md:grid md:grid-cols-2" id="log">
+            <form class="w-full py-5 px-5 md:grid md:grid-cols-2" id="log">
                 <div class="my-5 mx-5">
                     <div>
                         <label>Mail</label>
                     </div>
-                    <input class="w-full" type="email" name="email" id="email_log" placeholder="email@address.com" required>
+                    <input class="w-full" type="email" name="email" id="email_log" placeholder="email@address.com" autocomplete="username" required>
                 </div>
 
                 <div class="my-5 mx-5">
                     <div>
                         <label>Password</label>
                     </div>
-                    <input class="w-full" type="password" id="password_log" name="password" placeholder="password" required>
+                    <input class="w-full" type="password" id="password_log" name="password" placeholder="password" autocomplete="current-password" required>
                 </div>
 
                 <div class="text-center">
