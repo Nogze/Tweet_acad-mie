@@ -56,11 +56,8 @@ $(document).ready(function () {
             inputValid($("#email")) &&
             inputValid($("#password")) &&
             inputValid($("#passwordConfirm"))
-            ) {
-            console.log("OUI")
-        } else {
-            e.prenventDefault();
-            console.log("NON")
+            ) {} else {
+            e.preventDefault();
         }
     })
 })
