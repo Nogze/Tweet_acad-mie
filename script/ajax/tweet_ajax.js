@@ -23,7 +23,8 @@ function previewImg(){
 
 previewImg();
 
-$("#tweet").on("keydown", function(){
+$(document).on("keyup", "#tweet",function(){
+    console.log($(this).text().length)
     if($(this).text().length > 140){
         $(this).css("color", "red")
         $("#btn-tweet").attr("disabled", true)
@@ -43,23 +44,18 @@ $("#form_tweet").on("submit", function(e){
         'content': form.get('content'),
     });
     
-    console.log(json_arr)
     $.ajax({
         type: "post",
-        url: "../php/home.php",
+        url: "../php/send_tweet.php",
         data: {
             data:json_arr,
         },
         success: function (response, textStatus, jqXHR) {
             console.log(response)
-            alert(response)
-            // if (response == true) {
-            //     window.location.href = "./pages/home.html";
-            // }
         },
         error: function (xhr) {
-            alert(xhr.responseText);
-            alert(xhr.responseText.Message);
+            alert("ERROR : "+xhr.responseText);
+            alert("ERROR : "+xhr.responseText.Message);
         }
     });
 })
