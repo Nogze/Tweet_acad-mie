@@ -43,3 +43,9 @@ input, button, select{
     border-radius: 5px;
     padding: 0 .4rem!important;
 }
+
+#register-success {
+    color: green;
+    text-align: center;
+    visibility: hidden;
+}

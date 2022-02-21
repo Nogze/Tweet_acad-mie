@@ -49,7 +49,11 @@ $("#reg").on("submit", function (e) {
                 $('#phone').css('border', '#018749 3px solid')
                 $('#phone_notValid').css('display', 'none')
                 $('#successful-registration').css('display', 'block')
-
+                $('#reg input').val("")
+                $('#reg input').prop("disabled", "true")
+                $('#reg button').prop("disabled", "true")
+                $('#reg select').prop("disabled", "true")
+                $('#register-success').css("visibility", "visible")
             }
         }
     });
