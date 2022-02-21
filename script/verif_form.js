@@ -42,7 +42,7 @@ $(document).ready(function () {
     inputValid($("#password"))
     inputValid($("#passwordConfirm"))
 
-    $('form').submit(function (e) {
+    $('#reg').submit(function (e) {
 
         if(
             inputValid($("#firstname")) &&
