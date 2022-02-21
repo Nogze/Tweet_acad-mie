@@ -1,7 +1,7 @@
 /* Body */
 body{
     padding-top: 2vh;
-    background-color: rgb(88, 88, 88);
+    /* background-color: rgb(88, 88, 88); */
 
 }
 /* NAV */
@@ -59,12 +59,13 @@ main{
 *:focus, *:focus{
     outline: none;
 }
-#btn-tweet{
+.btn-tweet{
     background-color: #1da1f2;
     border-radius: 10px;
-    padding: 2% 4%;
+    padding: .2rem .7rem;
     color: white;
     margin-left: auto;
+    font-weight: bold;
 }
 /* icone */
 input[type=file] {
@@ -80,4 +81,77 @@ input[type=file] {
     background-color: rgb(204, 204, 204);
     border-radius: 20px;
     padding: 1% 2%;
+}
+
+/**** Print tweet ****/
+#POST{
+    margin-top: 1vh;
+    height: 85vh;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    overflow-y: scroll; 
+}
+#POST::-webkit-scrollbar {
+    display: none;
+}
+.username{
+    color: #1da1f2;
+    text-decoration: underline;
+}
+.print_tweet{
+    width: 80%;
+    margin: auto;
+    padding: 2vh 2vw;
+    border-radius: 20px;
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    margin-bottom: 2vh;
+}
+.print_tweet:hover{
+    background-color: rgba(240, 240, 240, 0.3);
+}
+.print_tweet div{
+    text-align: left;
+    padding-bottom: 2vh;
+}
+.comment_div{
+    display: none;
+}
+.comment_div #btn_reply{
+    text-align: center;
+}
+.comment{
+    border-radius: 20px;
+    background-color: rgb(218, 218, 218);
+    padding: 1% 0 1% 2%!important;
+    width: 70%;
+    margin: 1vh auto;
+    line-height: auto;
+}
+.post_info, .post_action{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.post_action div {
+    padding: .5rem;
+}
+.post_action div:hover{
+    background-color: rgba(56, 56, 56, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.date{
+    border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+    margin: 5vh 0;
+}
+sub{
+    text-decoration: none!important;
+}
+.com{
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    width: 95%;
+    margin: auto;
+    margin-bottom: 2vh;
+    border-radius: 20px;
+    padding: 2vh 1vw;
 }
