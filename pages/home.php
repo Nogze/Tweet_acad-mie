@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="5"/> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../script/ajax/tweet_ajax.js" defer></script>
+    <script src="../script/home.js" defer></script>
     <link rel="stylesheet" href="../style/home.css">
     <link rel="icon" href="../img/favicon.ico">
     <title>Home</title>
@@ -30,18 +32,16 @@
                     <div class="grid grid-cols-3" id="option">
                         <div>
                             <label for="files"><img src="../img/upload_img.png" alt="icone upload"></label>
-                            <input type="file" name="file" id="files" multiple="multiple" accept=".png, .jpg, .jpeg">
+                            <input type="file" name="file" id="files" multiple="multiple" accept=".png, .jpg, .jpeg" max="5">
                         </div> 
                         <div></div>
                         <div>
-                            <button id="btn-tweet">Tweet</button>
+                            <button class="btn-tweet">Tweet</button>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="text-center" id="POST">
-                PRINT POST
-            </div>
+            <div class="text-center" id="POST"></div>
         </div>
         <div>
             <div id="search">
