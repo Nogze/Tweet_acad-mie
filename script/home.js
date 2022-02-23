@@ -1,26 +1,24 @@
 /***** Preview img *****/
-function previewImg(){
-    $("#files").on("change", function(){
-        let nbr_files = $(this)[0].files.length;
-        if (nbr_files == 0){
-            return false;
-        }
+$("#files").on("change", function(){
+    $("#img-container").empty()
+    let nbr_files = $(this)[0].files.length;
+    if (nbr_files == 0){
+        return false;
+    }
+    
+    for (let i = 0; i < this.files.length; i++) {
+        let url = URL.createObjectURL(this.files[i]);
+        let img = new Image();
         
-        for (let i = 0; i < this.files.length; i++) {
-            let url = URL.createObjectURL(this.files[i]);
-            let img = new Image();
-            
-            img.src = url;
-            $("#img-container").append(img);
-            
-            img.onload = function() {
-                URL.revokeObjectURL(this.src);
-            }
+        img.src = url;
+        $("#img-container").append(img);
+        
+        img.onload = function() {
+            URL.revokeObjectURL(this.src);
         }
-    })
-}
+    }
+})
 
-previewImg();
 
 /***** check nbr carac tweet *****/
 $(document).on("keyup", "#tweet",function(e){
@@ -35,7 +33,7 @@ $(document).on("keyup", "#tweet",function(e){
 })
     
 /***** check nbr carac com *****/
-    $(document).on("keyup", ".comment",function(e){        
+$(document).on("keyup", ".comment",function(e){        
     // check longueur txt
     if($(this).text().length > 140){
         $(this).css("color", "red")
@@ -47,6 +45,13 @@ $(document).on("keyup", "#tweet",function(e){
 })
 
 /***** show coms *****/
+function dropDown(){
+    if(window.getComputedStyle(x).visibility === "hidden"){
+
+    } else {
+
+    }
+}
 let i = 0;
 $(document).on("click", ".img_comment", function(e){
     i++

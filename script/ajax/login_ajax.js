@@ -15,8 +15,12 @@ $("#log").on("submit", function(e){
         },
         contentType: "application/x-www-form-urlencoded; charset=utf-8",
         success: function (response, textStatus, jqXHR) {
-            if (response == true) {
-                window.location.href = "./pages/home.html";
+            response = JSON.parse(response)
+            console.log(response[0]["id"])
+            localStorage.setItem("id_user", response[0]["id"]);
+            if (response) {
+                window.location.href = "./pages/home.php";
+                console.log(localStorage)
             }
         },
         error: function (xhr) {

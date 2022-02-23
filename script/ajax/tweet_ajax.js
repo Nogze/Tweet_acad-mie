@@ -1,9 +1,11 @@
 $("#form_tweet").on("submit", function(e){
     e.preventDefault();
-
+    if ($("#tweet").text().length < 1){
+        return false;
+    }
     let form = new FormData($("#post")[0]);
     form.append("content", $("#tweet").text())
-
+    form.append('localStorage', localStorage.getItem("id_user"))
     let json_arr = JSON.stringify({
         'content': form.get('content'),
     });
@@ -33,8 +35,8 @@ $("#form_tweet").on("submit", function(e){
                                             "<div class=\"img_comment\"> <img src=\"../img/comment.png\" alt=\"comment\"> </div>"+
                                         "</div>"+
                                         "<div class=\"post_info\">"+
-                                            "<div class=\"likes\">"+ response[0][i]["likes"]+" likes</div>"+
-                                            "<div class=\"rt\">"+ response[0][i]["rt"]+" retweets</div>"+
+                                            "<div class=\"likes\">"+ response[0][i]["nbr_likes"]+" likes</div>"+
+                                            "<div class=\"rt\">"+ response[0][i]["nbr_rt"]+" retweets</div>"+
                                             "<div class=\"nbr_comment\">"+ response[0][i]["nbr_com"]+" comments</div>"+
                                         "</div>"+
 
@@ -71,7 +73,6 @@ $("#form_tweet").on("submit", function(e){
                 }
 
                 if (String.valueOf(response[0][i]["edition_date"]) != null || String.valueOf(response[0][i]["edition_date"]) != "null"){
-                    console.log("good")
                     $(modif+" .date").append("<div> <sup> Edited : "+ response[0][i]["edition_date"] + "</sup> </div>")
                 }
 
@@ -83,13 +84,13 @@ $("#form_tweet").on("submit", function(e){
         }
     });
 })
-
 $(document).on("click", ".btn_reply .btn-tweet", function(e){
         console.log($(e.target).parents(".print_tweet").attr("data_id"))
         
         let json_arr = JSON.stringify({
             'content': $(e.target).parents(".comment_div").children(".comment").text(),
             'id_post': $(e.target).parents(".print_tweet").attr("data_id"),
+            'localStorage': localStorage.getItem("id_user"),
         });
 
         $.ajax({
@@ -114,3 +115,28 @@ $(document).on("click", ".btn_reply .btn-tweet", function(e){
             }
         });
 })
+function add (classe){
+    $(document).on("click", classe,function(){
+        console.log($(this).attr("class"))
+
+        let json_arr = JSON.stringify({
+            'content': $(this).attr("class"),
+            'localStorage': localStorage.getItem("id_user"),
+        });
+        $.ajax({
+            type: "post",
+            url: "../php/send_com.php",
+            data: {
+                data: json_arr,
+            },
+            success: function (response) {
+                // response = JSON.parse(response)
+                // response = Array.from(response)
+                console.log(response)
+            }
+        });
+
+    })
+}
+add(".img_like") 
+add(".img_repost")
