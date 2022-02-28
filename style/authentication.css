@@ -54,3 +54,9 @@ input, button, select{
     text-align: center;
     visibility: hidden;
 }
+
+.error_msg {
+    color: #B31B1B;
+    display: none;
+    font-size: 0.8rem;
+}

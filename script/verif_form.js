@@ -38,6 +38,7 @@ $(document).ready(function () {
     inputValid($("#zipcode"))
     inputValid($("#gender"))
     inputValid($("#phone"))
+    inputValid($('#username'))
     inputValid($("#email"))
     inputValid($("#password"))
     inputValid($("#passwordConfirm"))
@@ -53,6 +54,7 @@ $(document).ready(function () {
             inputValid($("#zipcode")) &&
             inputValid($("#gender")) &&
             inputValid($("#phone")) &&
+            inputValid($('#username')) &&
             inputValid($("#email")) &&
             inputValid($("#password")) &&
             inputValid($("#passwordConfirm"))

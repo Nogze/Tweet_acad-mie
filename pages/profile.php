@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <link rel="icon" href="img/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../script/ajax/edit_profile-info.js"></script>
+    <script src="../script/profile.js"></script>
+    <link rel="icon" href="../img/favicon.ico">
+    <link rel="stylesheet" href="../style/profile.css">
     <title>Tweet Academie</title>
 </head>
-<body>
-    <header>
-<?php
-    $test = explode("/", $_SERVER['PHP_SELF']);
-    print_r($test[array_key_last($test)]);
-?>
-    </header>
-    <main>
 
+<body class="flex">
+    <nav>
+        <ul>
+            <li>Home</li>
+            <li>Hashtag</li>
+            <li>Messages</li>
+            <li>Profile</li>
+        </ul>
+    </nav>
+    <main class="grid grid-cols-2">
+        <div class="main">
+            <?php include("../php/gen_profile.php") ?>
+        </div>
+        <div>
+            <div id="search">
+                <input type="text" placeholder="Search" id="search_input">
+            </div>
+        </div>
     </main>
 </body>
+
 </html>
