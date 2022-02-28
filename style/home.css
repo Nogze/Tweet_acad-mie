@@ -140,6 +140,7 @@ input[type=file] {
     border-radius: 50%;
     cursor: pointer;
 }
+
 .date{
     border-bottom: 1px solid rgba(160, 160, 160, 0.2);
     margin: 5vh 0;
