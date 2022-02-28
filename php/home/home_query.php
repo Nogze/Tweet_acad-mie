@@ -37,7 +37,7 @@ function add_retweet($user, $post){
 
 // COMMMENT 
 function send_comment($user, $post, $content){
-    return "INSERT INTO comments (id_post, id_user, content) VALUES ($post, $user, $content);";
+    return "INSERT INTO comments (id_post, id_user, content) VALUES ('$post', '$user', '$content');";
 }
 
 // PRINT
@@ -62,7 +62,7 @@ function print_comment(){
                 username
             FROM comments
             INNER JOIN users on users.id = comments.id_user
-            ORDER BY id_post DESC;";
+            ORDER BY creation_date DESC;";
 }
 function print_rt(){
     return "SELECT * FROM retweet;";
