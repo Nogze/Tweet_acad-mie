@@ -1,3 +1,9 @@
+// PRINT ALL TWEET / COM ON LOAD
+var nbr_like = 0;
+var nbr_com = 0;
+var nbr_rt = 0;
+
+// LOAD PAGE PRINT ALL TWEET
 $(document).ready(function (){
     $.ajax({
         type: "post",
@@ -39,6 +45,7 @@ $(document).ready(function (){
                                             "<div class=\"res_com\">"+
                                             "</div>"+
                                         "</div>"+
+                                        "<button class=\"btn-del\">X</button>"+
                                  "</div>"
                 );
 
@@ -48,13 +55,14 @@ $(document).ready(function (){
                     for(let idx = 0; idx < response[1].length;  idx++){
                         if(response[0][i]["id"] == response[1][idx]["id_post"]){
 
-                            $(modif+" .res_com").append("<div class=\"com\">"+
+                            $(modif+" .res_com").append("<div class=\"com\" data-date=\""+response[1][idx]["creation_date"]+"\">"+
                                                             "<div class=\"username\">"+
                                                                 "<a href=\"\">"+response[1][idx]["username"]+"</a>"+
                                                             "</div>"+
                                                             "<div>"+
                                                                 response[1][idx]["content"]+
                                                             "</div>"+
+                                                            "<button class=\"btn-del\">X</button>"+
                                                         "</div>")
                         }
                     }
@@ -73,6 +81,7 @@ $(document).ready(function (){
     });
 })
 
+// ADD TWEET TO DB
 $("#form_tweet").on("submit", function(e){
     if ($("#tweet").text().length < 1){
         return false;
@@ -95,7 +104,7 @@ $("#form_tweet").on("submit", function(e){
             data:json_arr,
         },
         success: function (response, textStatus, jqXHR) {
-            console.log(response)
+            // console.log(response)
         },
         error: function (xhr) {
             alert("ERROR : "+xhr.responseText);
@@ -104,13 +113,23 @@ $("#form_tweet").on("submit", function(e){
     });
 })
 
+// ADD COM TO DB
 $(document).on("click", ".btn_reply .btn-tweet", function(e){
+
     let json_arr = JSON.stringify({
         'content': $(e.target).parents(".comment_div").children(".comment").text(),
         'id_post': $(e.target).parents(".print_tweet").attr("data_id"),
         'localStorage': localStorage.getItem("id_user"),
     });
+    
+    let parent = $(e.target).parents(".print_tweet");
 
+    console.log()
+
+    if ($(this).parents(".btn_reply").siblings(".comment").text().length < 1){
+        return false;
+    }
+    
     $.ajax({
         type: "post",
         url: "../php/home/home_reply_tweet.php",
@@ -118,34 +137,122 @@ $(document).on("click", ".btn_reply .btn-tweet", function(e){
             data: json_arr,
         },
         success: function (response, textStatus, jqXHR) {
-            console.log(response)
+            response = JSON.parse(response)
+
+            parent.children(".comment_div").children(".res_com").prepend("<div class=\"com\" data-date=\""+response["creation_date"]+"\">"+
+                                                                            "<div class=\"username\">"+
+                                                                                "<a href=\"\">"+response["username"]+"</a>"+
+                                                                            "</div>"+
+                                                                            "<div>"+
+                                                                                response["content"]+
+                                                                            "</div>"+
+                                                                            "<button class=\"btn-del\">X</button>"+
+                                                                        "</div>")
+                    
+            parent.children(".comment_div").children(".comment").text("")
         }
     });
 })
 
+// ADD LIKE TO POST
+$(document).on("click", ".img_like",function(e){
+    e.preventDefault();
 
-// function add (classe){
-//     $(document).on("click", classe,function(){
-//         console.log($(this).attr("class"))
+    let json_arr = JSON.stringify({
+        'content': $(this).attr("class"),
+        'localStorage': localStorage.getItem("id_user"),
+        'post': $(e.target).parents(".print_tweet").attr("data_id"),
+    });
 
-//         let json_arr = JSON.stringify({
-//             'content': $(this).attr("class"),
-//             'localStorage': localStorage.getItem("id_user"),
-//         });
-//         $.ajax({
-//             type: "post",
-//             url: "../php/send_com.php",
-//             data: {
-//                 data: json_arr,
-//             },
-//             success: function (response) {
-//                 // response = JSON.parse(response)
-//                 // response = Array.from(response)
-//                 console.log(response)
-//             }
-//         });
+    $.ajax({
+        type: "post",
+        url: "../php/home/home_send_like.php",
+        data: {
+            data: json_arr,
+        },
+        success: function (response) {
+            let post_like = $(e.target).parents(".print_tweet").attr("data_id");
+            let like_text = $("[data_id="+post_like+"] .likes").text();
+            let nbr_like = parseInt(like_text.split(" ")[0])
+            
+            response = JSON.parse(response);
 
-//     })
-// }
-// add(".img_like")
-// add(".img_repost")
+            if (response[0] == false){
+                console.log("IF")
+                parseInt(nbr_like--)
+            } else {
+                console.log("ELSE")
+                parseInt(nbr_like++)
+            }
+
+            $("[data_id="+post_like+"] .likes").text(nbr_like + " likes")
+        }
+    });
+})
+
+// ADD RT TO POST
+$(document).on("click", ".img_repost",function(e){
+    e.preventDefault();
+    let json_arr = JSON.stringify({
+        'content': $(this).attr("class"),
+        'localStorage': localStorage.getItem("id_user"),
+        'post': $(e.target).parents(".print_tweet").attr("data_id"),
+    });
+
+    $.ajax({
+        type: "post",
+        url: "../php/home/home_send_rt.php",
+        data: {
+            data: json_arr,
+        },
+        success: function (response) {
+            let post_rt = $(e.target).parents(".print_tweet").attr("data_id");
+            let rt_text = $("[data_id="+post_rt+"] .rt").text();
+            let nbr_rt = parseInt(rt_text.split(" ")[0])
+            
+            response = JSON.parse(response);
+
+            if (response[0] == false){
+                console.log("IF")
+                parseInt(nbr_rt--)
+            } else {
+                console.log("ELSE")
+                parseInt(nbr_rt++)
+            }
+
+            $("[data_id="+post_rt+"] .rt").text(nbr_rt + " retweets")
+        }
+    });
+})
+
+// BTN SUPPR
+$(document).on("click", ".com .btn-del", function(e){
+    let json_arr = JSON.stringify({
+        'username': $(e.target).parent().children(".username").text(),
+        'date' : $(e.target).parent().attr("data-date"),
+        'id_post': $(e.target).parents(".print_tweet").attr("data_id"),
+        'localStorage': localStorage.getItem("id_user"),
+    });
+    $.ajax({
+        type: "post",
+        url: "../php/home/home_del.php",
+        data: {
+            data:json_arr,
+        },
+        success: function (response) {
+            let post_com = $(e.target).parents(".print_tweet").attr("data_id");
+            let com_text = $("[data_id="+post_com+"] .nbr_comment").text();
+            let nbr_com = parseInt(com_text.split(" ")[0])
+            
+            response = JSON.parse(response)
+
+            if(response === true){
+                $(e.target).parent().remove()
+                parseInt(nbr_com--)
+                $("[data_id="+post_com+"] .nbr_comment").text(nbr_com + " retweets")
+            }
+
+        }
+    });
+
+})

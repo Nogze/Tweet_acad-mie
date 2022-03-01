@@ -108,6 +108,7 @@ input[type=file] {
 }
 .print_tweet:hover{
     background-color: rgba(240, 240, 240, 0.3);
+    position: relative;
 }
 .print_tweet div{
     text-align: left;
@@ -155,4 +156,11 @@ sub{
     margin-bottom: 2vh;
     border-radius: 20px;
     padding: 2vh 1vw;
+    position: relative;
+}
+/*btn_sppr*/
+.btn-del{
+    position: absolute;
+    top: .4rem;
+    right: .4rem;
 }
