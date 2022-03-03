@@ -13,8 +13,9 @@ if (!empty($email) && !empty($password)) {
 
     
     $sth = $pdo->query($command);
-    
     if ($sth->rowCount() == 1){
-        echo true;
+        $sth = $sth->fetchAll(PDO::FETCH_ASSOC);
+        $data = $sth;
+        print_r(json_encode($data));
     }
 }
