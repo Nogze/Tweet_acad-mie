@@ -141,6 +141,31 @@ if ($data->username) {
     }
 }
 
+function uploadImage() {
+    $valid_extensions = ['jpeg', 'jpg', 'png', 'webp', 'gif', 'webm'];
+    $path = '../img/temp_upload/';
+    $img = $_FILES['profile_picture']['name'];
+    $tmp = $_FILES['profile_picture']['tmp_name'];
+    $img_extension = explode("/", $_FILES['profile_picture']['type'])[1];
+
+    if (in_array($img_extension, $valid_extensions)) {
+        $path = $path . strtolower($img);
+        if (move_uploaded_file($tmp, $path)) {
+            $base64 = base64_encode(file_get_contents($path));
+            unlink($path);
+        }
+    }
+    return $base64;
+}
+
+if (!empty($_FILES['profile_picture'])) {
+    $base64image = uploadImage();
+    $sql .= "profile_picture = '" . $base64image . "', ";
+}
+else {
+    $base64image = null;
+}
+
 if ($userExists->phone == 0 && $userExists->email == 0 && $userExists->username == 0) {
     getUserID($pdo, $data);
     $parseInputs = parseInputs($data, $sql);
@@ -152,7 +177,7 @@ if ($userExists->phone == 0 && $userExists->email == 0 && $userExists->username 
     }
     else {
     updateUserInfos($pdo, $sql, $data);
-    echo json_encode(["msg" => "user infos updated !", "newUsername" => $data->username, "newFirstName" => $data->firstname, "newLastName" => $data->lastname]);
+    echo json_encode(["msg" => "user infos updated !", "newUsername" => $data->username, "newFirstName" => $data->firstname, "newLastName" => $data->lastname, "newProfilePicture" => $_FILES['profile_picture']['type'] . ";base64, " . $base64image]);
     }
 }
 else {

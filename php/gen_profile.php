@@ -3,14 +3,14 @@
 include("db_connect.php");
 
 try {
-    $sth = $pdo->prepare("SELECT profile_picture, firstname, lastname, username, creation_date,
+    $sth = $pdo->prepare("SELECT id, profile_picture, firstname, lastname, username, creation_date,
     (SELECT COUNT(follows.id) FROM follows WHERE follows.id_following = users.id) AS followers,
     (SELECT COUNT(follows.id) FROM follows WHERE follows.id_follower = users.id ) AS following
     FROM `users` WHERE username ='@" . $_GET['username'] . "'");
     $sth->execute();
     $user_infos = $sth->fetchAll(PDO::FETCH_ASSOC);
 } catch(Exception $e) {
-    echo "Error :" . $e->getMessage();
+    echo "Error : " . $e->getMessage();
 }
 
 $user_infos = $user_infos[0];
@@ -18,8 +18,24 @@ if (empty($user_infos)) {
     echo "<script>window.location.href = './home.html'</script>";
 }
 
+try {
+    $sth = $pdo->prepare("SELECT username, profile_picture FROM `users` INNER JOIN follows ON users.id = follows.id_follower WHERE follows.id_following = " . $user_infos['id']);
+    $sth->execute();
+    $user_followers = $sth->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo "Error : " . $e->getMessage();
+}
+
+try {
+    $sth = $pdo->prepare("SELECT username, profile_picture FROM `users` INNER JOIN follows ON users.id = follows.id_following WHERE follows.id_follower = " . $user_infos['id']);
+    $sth->execute();
+    $user_following = $sth->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo "Error : " . $e->getMessage();
+}
+
 $f = finfo_open();
-$imagetype = finfo_buffer($f, base64_decode($user_infos['profile_picture']), FILEINFO_MIME_TYPE)
+$imagetype = finfo_buffer($f, base64_decode($user_infos['profile_picture']), FILEINFO_MIME_TYPE);
 
 ?>
 
@@ -39,15 +55,41 @@ $imagetype = finfo_buffer($f, base64_decode($user_infos['profile_picture']), FIL
         <p><?php echo $user_infos['username']?></p>
         <p>Joined <?php echo explode(" ", $user_infos['creation_date'])[0] ?></p>
         <div style="width: fit-content;" class="grid grid-cols-2 gap-10">
-            <p class="follows-count"><strong><?php echo '<span style="color: black">' . $user_infos['following'] . '</span>' ?></strong> following</p>
-            <p class="follows-count"><strong><?php echo '<span style="color: black">' . $user_infos['followers'] . '</span>' ?></strong> followers</p>
+            <p class="follows-count following"><strong><?php echo '<span style="color: black">' . $user_infos['following'] . '</span>' ?></strong> following</p>
+            <p class="follows-count followers"><strong><?php echo '<span style="color: black">' . $user_infos['followers'] . '</span>' ?></strong> followers</p>
         </div>
     </div>
 </div>
 <div id="modal">
-    <div class="modal-container">
+    <div class="modal-container followers-modal">
+        <h1>Followers</h1>
+        <?php
+            for ($i = 0; $i < count($user_followers); $i++) {
+                echo "<div class='follows'>" .
+                        "<img style='border-radius: 100%; max-width: 50px; max-height: 50px' src='data:" . finfo_buffer($f, base64_decode($user_followers[$i]['profile_picture']), FILEINFO_MIME_TYPE) . ";base64, " . $user_followers[$i]['profile_picture'] . "'/>" .
+                        "<p><a href='?username=" . substr($user_followers[$i]['username'], 1) . "'>" . $user_followers[$i]['username'] . "</a></p>" .
+                    "</div>";
+            }
+        ?>
+    </div>
+    <div class="modal-container following-modal">
+        <h1>Following</h1>
+        <?php
+            for ($i = 0; $i < count($user_following); $i++) {
+                echo "<div class='follows'>" .
+                        "<img style='border-radius: 100%; max-width: 50px; max-height: 50px' src='data:" . finfo_buffer($f, base64_decode($user_following[$i]['profile_picture']), FILEINFO_MIME_TYPE) . ";base64, " . $user_following[$i]['profile_picture'] . "'/>" .
+                        "<p><a href='?username=" . substr($user_following[$i]['username'], 1) . "'>" . $user_following[$i]['username'] . "</a></p>" .
+                    "</div>";
+            }
+        ?>
+    </div>
+    <div class="modal-container form-modal">
         <h1>Edit profile</h1>
-        <form style="text-align: center">
+        <form enctype="multipart/form-data" style="text-align: center">
+        <div class="field">
+                <label for="form_profile_picture">Profile picture<img id="profile_pic_preview" style="margin: 5px auto; border: solid gray 1px" src="https://dummyimage.com/150x150/ffffff/000000&text=image+preview"/></label>
+                <input style="display: none" name="profile_picture" id="form_profile_picture" type="file" accept="image/*">
+            </div>
         <div class="field">
                 <label for="firstname">First name</label>
                 <input name="firstname" id="firstname" type="name" placeholder="Tahm">
@@ -77,7 +119,7 @@ $imagetype = finfo_buffer($f, base64_decode($user_infos['profile_picture']), FIL
                 <input name="address" id="address" type="address" placeholder="2 Baron Nashor St.">
             </div>
             <div class="field">
-                <label for="zipcode">zipcode</label>
+                <label for="zipcode">Zipcode</label>
                 <input name="zipcode" id="zipcode" type="zipcode" placeholder="33000">
             </div>
             <input type="hidden" name="current-username" value="<?php echo $user_infos['username'] ?>">
