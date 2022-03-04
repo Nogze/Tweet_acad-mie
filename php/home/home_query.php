@@ -41,6 +41,7 @@ function send_comment($user, $post, $content){
 }
 function get_last_com($post, $user){
     return "SELECT 
+                comments.id,
                 comments.id_post, 
                 comments.content,
                 comments.creation_date, 
@@ -69,10 +70,13 @@ function print_tweet(){
             ORDER BY post.creation_date DESC;";
 }
 function print_comment(){
-    return "SELECT
-                comments.*,
-                username
-            FROM comments
+    return "SELECT  comments.id, 
+                    comments.id_post, 
+                    comments.id_user as 'user_com', 
+                    comments.content, 
+                    comments.creation_date, 
+                    username 
+            FROM comments 
             INNER JOIN users on users.id = comments.id_user
             ORDER BY creation_date DESC;";
 }
@@ -80,15 +84,27 @@ function print_rt(){
     return "SELECT * FROM retweet;";
 }
 
-// DELETE 
+// CHECK
 function check_user_id($username){
     return "SELECT id FROM users WHERE users.username = \"$username\";";
 }
-function del_com($id_user, $post, $date){
-    return "DELETE FROM comments WHERE id_user = '$id_user' AND id_post= '$post' AND creation_date='$date'";
+
+// DELETE 
+function del_com($id_user, $com){
+    return "DELETE FROM comments WHERE id_user = '$id_user' AND id= '$com'";
 }
 function del_tweet(){
     return "DELETE FROM post INNER JOIN comments on post  ON WHERE ";
 }
 
 // UPDATE
+function com_update($id, $content){
+    return "UPDATE comments 
+            SET comments.content = '$content'
+            WHERE comments.id = '$id'";
+}
+function tweet_update($id, $content){
+    return "UPDATE post 
+            SET comments.content = '$content'
+            WHERE comments.id = '$id'";
+}

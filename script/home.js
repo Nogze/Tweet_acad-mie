@@ -19,7 +19,6 @@ $("#files").on("change", function(){
     }
 })
 
-
 /***** check nbr carac tweet *****/
 $(document).on("keyup", "#tweet",function(e){
     // check longueur txt
@@ -61,4 +60,16 @@ $(document).on("click", ".img_comment", function(e){
         $(e.target).parents(".print_tweet").children(".comment_div").hide();
 
     }
+})
+
+/***** show option *****/
+$(document).on("mouseenter", ".print_tweet", function(e){
+    $(".btn-modif").show()
+    $(".btn-del").show()
+})
+
+/***** hide option *****/
+$(document).on("mouseleave", ".print_tweet", function(e){
+    $(".btn-modif").hide()
+    $(".btn-del").hide()
 })
