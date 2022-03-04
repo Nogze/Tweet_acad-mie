@@ -15,7 +15,7 @@ try {
 
 $user_infos = $user_infos[0];
 if (empty($user_infos)) {
-    echo "<script>window.location.href = './home.html'</script>";
+    echo "<script>window.location.href = './home.php'</script>";
 }
 
 try {

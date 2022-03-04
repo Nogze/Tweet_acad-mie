@@ -43,7 +43,7 @@ function parseInputs($data, $sql) {
                 }
                 break;
             case "username" :
-                if (preg_match("/^[\w]{2,}$/", $value)) {
+                if (preg_match("/^[\wOffres d’emploi anne varlet | LinkedIn]{2,}$/", $value)) {
                     $sql .= "$key = '@$value', ";
                 }
                 else {
