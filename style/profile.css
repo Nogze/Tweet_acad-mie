@@ -42,6 +42,28 @@ main {
     border: lightgrey 1px solid;
     border-radius: 30px;
     margin: 10px;
+    font-weight: bold;
+}
+
+#btn-follow {
+    padding: 10px;
+    border: lightgrey 1px solid;
+    border-radius: 30px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+.btn-unfollow {
+    color: red;
+    font-weight: normal !important;
+}
+
+.btn-unfollow:hover {
+    background: red !important;
+}
+
+.btn {
+    visibility: hidden;
 }
 
 .profile-pic-container {

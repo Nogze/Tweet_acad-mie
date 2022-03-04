@@ -48,7 +48,8 @@ $imagetype = finfo_buffer($f, base64_decode($user_infos['profile_picture']), FIL
         </div>
     </div>
     <div style="text-align: right;">
-        <button id="btn-edit-profile"><strong>Edit account</strong></button>
+        <button class="btn" id="btn-edit-profile">Edit account</button>
+        <button class="btn" id="btn-follow">Follow</button>
     </div>
     <div class="user-infos">
         <h1 id="identity"><?php echo $user_infos['firstname'] . " " . $user_infos['lastname'] ?></h1>
@@ -65,10 +66,14 @@ $imagetype = finfo_buffer($f, base64_decode($user_infos['profile_picture']), FIL
         <h1>Followers</h1>
         <?php
             for ($i = 0; $i < count($user_followers); $i++) {
-                echo "<div class='follows'>" .
-                        "<img style='border-radius: 100%; max-width: 50px; max-height: 50px' src='data:" . finfo_buffer($f, base64_decode($user_followers[$i]['profile_picture']), FILEINFO_MIME_TYPE) . ";base64, " . $user_followers[$i]['profile_picture'] . "'/>" .
-                        "<p><a href='?username=" . substr($user_followers[$i]['username'], 1) . "'>" . $user_followers[$i]['username'] . "</a></p>" .
-                    "</div>";
+                echo "<a id='follower-" . substr($user_followers[$i]['username'], 1) . "' href='?username=" . substr($user_followers[$i]['username'], 1) . "'>" .
+                        "<span style='display: block'>" .
+                            "<div class='follows'>" .
+                                "<img style='border-radius: 100%; max-width: 50px; max-height: 50px' src='data:" . finfo_buffer($f, base64_decode($user_followers[$i]['profile_picture']), FILEINFO_MIME_TYPE) . ";base64, " . $user_followers[$i]['profile_picture'] . "'/>" .
+                                "<p>" . $user_followers[$i]['username'] . "</p>" .
+                            "</div>" .
+                        "</span>" .
+                    "</a>";
             }
         ?>
     </div>
@@ -76,10 +81,14 @@ $imagetype = finfo_buffer($f, base64_decode($user_infos['profile_picture']), FIL
         <h1>Following</h1>
         <?php
             for ($i = 0; $i < count($user_following); $i++) {
-                echo "<div class='follows'>" .
-                        "<img style='border-radius: 100%; max-width: 50px; max-height: 50px' src='data:" . finfo_buffer($f, base64_decode($user_following[$i]['profile_picture']), FILEINFO_MIME_TYPE) . ";base64, " . $user_following[$i]['profile_picture'] . "'/>" .
-                        "<p><a href='?username=" . substr($user_following[$i]['username'], 1) . "'>" . $user_following[$i]['username'] . "</a></p>" .
-                    "</div>";
+                echo "<a href='?username=" . substr($user_following[$i]['username'], 1) . "'>" .
+                        "<span style='display: block'>" .
+                            "<div class='follows'>" .
+                                "<img style='border-radius: 100%; max-width: 50px; max-height: 50px' src='data:" . finfo_buffer($f, base64_decode($user_following[$i]['profile_picture']), FILEINFO_MIME_TYPE) . ";base64, " . $user_following[$i]['profile_picture'] . "'/>" .
+                                "<p>" . $user_following[$i]['username'] . "</p>" .
+                            "</div>" .
+                        "</span>" .
+                    "</a>";
             }
         ?>
     </div>
