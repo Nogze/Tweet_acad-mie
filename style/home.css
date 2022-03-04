@@ -162,7 +162,7 @@ sub{
 
 
 /*btn_sppr*/
-.btn-del{
+.btn-del, .btn-del-tweet{
     position: absolute;
     top: .4rem;
     right: .4rem;

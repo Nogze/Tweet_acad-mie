@@ -66,10 +66,12 @@ $(document).on("click", ".img_comment", function(e){
 $(document).on("mouseenter", ".print_tweet", function(e){
     $(".btn-modif").show()
     $(".btn-del").show()
+    $(".btn-del-tweet").show()
 })
 
 /***** hide option *****/
 $(document).on("mouseleave", ".print_tweet", function(e){
     $(".btn-modif").hide()
     $(".btn-del").hide()
+    $(".btn-del-tweet").hide()
 })

@@ -53,7 +53,7 @@ $(document).ready(function (){
                 let modif = "[data_id="+response[0][i]["id"]+"]";
                 if(response[0][i]["id_user"] == parseInt(localStorage.getItem("id_user"))){
                     $(modif).append(
-                        "<button class=\"btn-del\">X</button>"+
+                        "<button class=\"btn-del-tweet\">X</button>"+
                         "<button class=\"btn-modif\"><img src=\"../img/crayon.png\" alt=\"logo crayon\"></button>"+
                         "<button class=\"btn-tweet send-modif\">Modif</button>"
                     )
@@ -273,7 +273,7 @@ $(document).on("click", ".com .btn-del", function(e){
 })
 
 // BTN SUPPR TWEET
-$(document).on("click", ".print_tweet .btn-del", function(e){
+$(document).on("click", ".print_tweet .btn-del-tweet", function(e){
     let tweet = $(e.target).parents(".print_tweet")
     let json_arr = JSON.stringify({
         'title': "tweet",
