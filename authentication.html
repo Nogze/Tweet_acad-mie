@@ -7,15 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="script/home.js" defer></script>
+    <script src="script/authentication.js" defer></script>
     <script src="script/verif_form.js" defer></script>
     <script src="script/ajax/login_ajax.js" defer></script>
     <script src="script/ajax/register_ajax.js" defer></script>
-    <link rel="stylesheet" href="style/home.css">
+    <link rel="stylesheet" href="style/authentication.css">
     <link rel="icon" href="img/favicon.ico">
     <title>Tweet Academie</title>
 </head>
 <body>
+        <p id="register-success">Registration successful ! Please log in.</p>
     <header>
         <div class="w-12 mx-auto">
             <img src="img/wack.png" alt="logo wack twitter">
@@ -85,13 +86,23 @@
                         <label>Phone</label>
                     </div>
                     <input class="w-full" type="tel" name="phone" id="phone" placeholder="0612345678" pattern="^[0-9]{10}">
+                    <p class="error_msg" id="phone_taken">This phone number is already used.</p>
+                </div>
+
+                <div class="col-span-2 mb-2">
+                    <div>
+                        <label>Username</label>
+                    </div>
+                    <input class="w-full" type="username" name="username" placeholder="Singed123" id="username" pattern="[\w]{2,}" autocomplete="username" required>
+                    <p class="error_msg" id="username_taken">This username is already taken.</p>
                 </div>
 
                 <div class="col-span-2 mb-2">
                     <div>
                         <label>Mail</label>
                     </div>
-                    <input class="w-full" type="email" name="email" placeholder="email@address.com" id="email" pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" autocomplete="username" required>
+                    <input class="w-full" type="email" name="email" placeholder="email@address.com" id="email" pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" required>
+                    <p class="error_msg" id="email_taken">This email address is already taken.</p>
                 </div>
 
                 <div class="mb-2">

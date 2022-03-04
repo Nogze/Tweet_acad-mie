@@ -1,0 +1,62 @@
+/* All */
+
+li{
+    list-style-type: none;
+    padding: .7rem;
+}
+
+/* header */
+header{
+    padding: 2vh 0;
+    text-align: center;
+}
+
+/* MAIN */
+main{
+    padding: 0 20vw;
+}
+
+li:hover{
+    background-color: #1da1f2;
+    color: white;
+}
+
+li:last-child{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+li:first-child{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border: 1px solid black;
+}
+
+form{
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+input, button, select{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 0 .4rem!important;
+}
+
+#register-success {
+    color: green;
+    text-align: center;
+    visibility: hidden;
+}
+
+.error_msg {
+    color: #B31B1B;
+    display: none;
+    font-size: 0.8rem;
+}

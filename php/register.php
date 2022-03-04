@@ -53,16 +53,27 @@ function exists_User_Email($pdo, $data)
     return $state_email->rowCount();
 }
 
+function exists_User_Username($pdo, $data)
+{
+    try {
+        $state_username = $pdo->query('SELECT id FROM `users` WHERE username = "' . $data->username . '"');
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+    return $state_username->rowCount();
+}
+
 // Push to database //
 function registerQuery($pdo, $data)
 {
-    $sth = $pdo->prepare('INSERT INTO `users` (email, password, phone, firstname, lastname, birthdate, address, city, zipcode, gender)
-        VALUES (:email, :password, :phone, :firstname, :lastname, :birthdate, :address, :city, :zipcode, :gender);');
+    $sth = $pdo->prepare('INSERT INTO `users` (email, password, username, phone, firstname, lastname, birthdate, address, city, zipcode, gender, profile_picture)
+        VALUES (:email, :password, :username, :phone, :firstname, :lastname, :birthdate, :address, :city, :zipcode, :gender, :profile_picture);');
 
     try {
         $sth->execute(array(
             ':email' => $data->email,
             ':password' => hash('sha512', $data->password . 'vive le projet tweet_academy'),
+            ':username' => "@" . $data->username,
             ':phone' => $data->phone,
             ':firstname' => $data->firstname,
             ':lastname' => $data->lastname,
@@ -71,6 +82,7 @@ function registerQuery($pdo, $data)
             ':city' => $data->city,
             ':zipcode' => $data->zipcode,
             ':gender' => $data->gender,
+            ':profile_picture' =>  base64_encode(file_get_contents("https://dummyimage.com/150x150/abcabc/fff&text=" . substr($data->firstname, 0, 1) . substr($data->lastname, 0, 1)))
         ));
         echo json_encode(["msg" => "success"]);
     } catch (Exception $e) {
@@ -80,25 +92,32 @@ function registerQuery($pdo, $data)
 
 // Call functions //
 $data = json_decode($_POST['data']);
+$userExists = new stdClass;
 
 try {
 
     if (isFilled($data) && checkValidity($data)) {
         if (exists_User_Phone($pdo, $data) == 0) {
-            $response = $response . "0";
+            $userExists->phone = "0";
         } else {
-            $response = $response . "1";
+            $userExists->phone = "1";
         }
         if (exists_User_Email($pdo, $data) == 0) {
-            $response = $response . "0";
+            $userExists->email = "0";
         } else {
-            $response = $response . "1";
+            $userExists->email = "1";
         }
-        if (substr($response, 0, 1) == 0 && substr($response, 1, 2) == 0) {
+        if (exists_User_Username($pdo, $data) == 0) {
+            $userExists->username = "0";
+        }
+        else {
+            $userExists->username = "1";
+        }
+        if ($userExists->phone == 0 && $userExists->email == 0 && $userExists->username == 0) {
             registerQuery($pdo, $data);
         }
         else {
-        echo "{\"phone\":" . intval(substr($response, 0, 1)) . ", \"email\":" . intval(substr($response, 1, 2)) . "}";
+        echo json_encode([["phone" => $userExists->phone], ["email" => $userExists->email], ["username" => $userExists->username]]);
         }
     }
 } catch (Exception $e) {
