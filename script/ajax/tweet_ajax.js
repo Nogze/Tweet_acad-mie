@@ -13,14 +13,14 @@ $(document).ready(function (){
         },
         success: function (response, textStatus, jqXHR) {
             response = JSON.parse(response)
-            console.log(response)
+            // console.log(response)
 
             for(let i = 0; i < response[0].length; i++){
                 $("#POST").append("<div class=\"print_tweet\" data_id=\""+response[0][i]["id"]+"\">"+
                                         "<div class=\"username\">"+
                                             "<a href=\"\">"+response[0][i]["username"]+"</a>"+
                                         "</div>"+
-                                        "<div>"+
+                                        "<div class=\"tweet-txt\">"+
                                             response[0][i]["content"]+
                                         "</div>"+
                                         "<div class=\"post_action\">"+
@@ -45,26 +45,36 @@ $(document).ready(function (){
                                             "<div class=\"res_com\">"+
                                             "</div>"+
                                         "</div>"+
-                                        "<button class=\"btn-del\">X</button>"+
                                  "</div>"
                 );
-
                 let modif = "[data_id="+response[0][i]["id"]+"]";
+                if(response[0][i]["id_user"] == parseInt(localStorage.getItem("id_user"))){
+                    // console.log("ENTRE")
+                    $(modif).append(
+                        "<button class=\"btn-del\">X</button>"+
+                        "<button class=\"btn-modif\"><img src=\"../img/crayon.png\" alt=\"logo crayon\"></button>"+
+                        "<button class=\"btn-tweet send-modif\">Modif</button>"
+                    )
+                }
 
                 if (response[0][i]["nbr_com"] >= 1){
-                    for(let idx = 0; idx < response[1].length;  idx++){
+                    for(let idx = 0; idx < response[0][i]["nbr_com"];  idx++){
                         if(response[0][i]["id"] == response[1][idx]["id_post"]){
-
-                            $(modif+" .res_com").append("<div class=\"com\" data-date=\""+response[1][idx]["creation_date"]+"\">"+
+                            $(modif+" .res_com").append("<div class=\"com\" data-id-com=\""+response[1][idx]["id"]+"\">"+
                                                             "<div class=\"username\">"+
                                                                 "<a href=\"\">"+response[1][idx]["username"]+"</a>"+
                                                             "</div>"+
-                                                            "<div>"+
+                                                            "<div class=\"text_com\">"+
                                                                 response[1][idx]["content"]+
                                                             "</div>"+
-                                                            "<button class=\"btn-del\">X</button>"+
                                                         "</div>")
                         }
+                        if(response[1][idx]["user_com"] === parseInt(localStorage.getItem("id_user"))){
+                            $(modif+" [data-id-com=\""+response[1][idx]["id"]+"\"]").append("<button class=\"btn-del\">X</button>"+
+                            "<button class=\"btn-modif\"><img src=\"../img/crayon.png\" alt=\"logo crayon\"></button>"+
+                            "<button class=\"btn-tweet send-modif\">Modif</button>")
+                        }
+
                     }
                 }
 
@@ -121,15 +131,13 @@ $(document).on("click", ".btn_reply .btn-tweet", function(e){
         'id_post': $(e.target).parents(".print_tweet").attr("data_id"),
         'localStorage': localStorage.getItem("id_user"),
     });
-    
-    let parent = $(e.target).parents(".print_tweet");
 
-    console.log()
+    let parent = $(e.target).parents(".print_tweet");
 
     if ($(this).parents(".btn_reply").siblings(".comment").text().length < 1){
         return false;
     }
-    
+
     $.ajax({
         type: "post",
         url: "../php/home/home_reply_tweet.php",
@@ -138,18 +146,29 @@ $(document).on("click", ".btn_reply .btn-tweet", function(e){
         },
         success: function (response, textStatus, jqXHR) {
             response = JSON.parse(response)
+            console.log(response)
 
-            parent.children(".comment_div").children(".res_com").prepend("<div class=\"com\" data-date=\""+response["creation_date"]+"\">"+
+            parent.children(".comment_div").children(".res_com").prepend("<div class=\"com\" data-id-com=\""+response["id"]+"\">"+
                                                                             "<div class=\"username\">"+
                                                                                 "<a href=\"\">"+response["username"]+"</a>"+
                                                                             "</div>"+
-                                                                            "<div>"+
+                                                                            "<div class=\"text_com\">"+
                                                                                 response["content"]+
                                                                             "</div>"+
                                                                             "<button class=\"btn-del\">X</button>"+
+                                                                            "<button class=\"btn-del\">X</button>"+
+                                                                            "<button class=\"btn-modif\"><img src=\"../img/crayon.png\" alt=\"logo crayon\"></button>"+
+                                                                            "<button class=\"btn-tweet send-modif\">Modif</button>"+
                                                                         "</div>")
-                    
+
             parent.children(".comment_div").children(".comment").text("")
+            let post_com = $(e.target).parents(".print_tweet").attr("data_id");
+            let com_text = $("[data_id="+post_com+"] .nbr_comment").text();
+            let nbr_com = parseInt(com_text.split(" ")[0])
+            
+            $(e.target).parent().remove()
+            parseInt(nbr_com++)
+            $("[data_id="+post_com+"] .nbr_comment").text(nbr_com + " comments")
         }
     });
 })
@@ -174,7 +193,7 @@ $(document).on("click", ".img_like",function(e){
             let post_like = $(e.target).parents(".print_tweet").attr("data_id");
             let like_text = $("[data_id="+post_like+"] .likes").text();
             let nbr_like = parseInt(like_text.split(" ")[0])
-            
+
             response = JSON.parse(response);
 
             if (response[0] == false){
@@ -209,7 +228,7 @@ $(document).on("click", ".img_repost",function(e){
             let post_rt = $(e.target).parents(".print_tweet").attr("data_id");
             let rt_text = $("[data_id="+post_rt+"] .rt").text();
             let nbr_rt = parseInt(rt_text.split(" ")[0])
-            
+
             response = JSON.parse(response);
 
             if (response[0] == false){
@@ -228,9 +247,7 @@ $(document).on("click", ".img_repost",function(e){
 // BTN SUPPR
 $(document).on("click", ".com .btn-del", function(e){
     let json_arr = JSON.stringify({
-        'username': $(e.target).parent().children(".username").text(),
-        'date' : $(e.target).parent().attr("data-date"),
-        'id_post': $(e.target).parents(".print_tweet").attr("data_id"),
+        'id_com' : $(e.target).parent().attr("data-id-com"),
         'localStorage': localStorage.getItem("id_user"),
     });
     $.ajax({
@@ -243,16 +260,57 @@ $(document).on("click", ".com .btn-del", function(e){
             let post_com = $(e.target).parents(".print_tweet").attr("data_id");
             let com_text = $("[data_id="+post_com+"] .nbr_comment").text();
             let nbr_com = parseInt(com_text.split(" ")[0])
-            
-            response = JSON.parse(response)
 
-            if(response === true){
-                $(e.target).parent().remove()
-                parseInt(nbr_com--)
-                $("[data_id="+post_com+"] .nbr_comment").text(nbr_com + " retweets")
-            }
+            $(e.target).parent().remove()
+            parseInt(nbr_com--)
+            $("[data_id="+post_com+"] .nbr_comment").text(nbr_com + " comments")
 
         }
     });
 
+})
+
+//BTN MODIF COM
+$(document).on("click", ".com .btn-modif", function(e){
+    $(this).parents(".com").children(".send-modif").show()
+   
+    let com = $(this).parents(".com").children(".text_com")
+    com.attr("contenteditable",true)
+    com.css("border", "1px solid rgba(200, 200, 200, .8)")
+    com.css("border-radius", "10px")
+})
+
+//BTN MODIF COM
+$(document).on("click", ".com .btn-modif", function(e){
+    $(this).parents(".com").children(".send-modif").show()
+   
+    let com = $(this).parents(".com").children(".text_com")
+    com.attr("contenteditable",true)
+    com.css("border", "1px solid rgba(200, 200, 200, .8)")
+    com.css("border-radius", "10px")
+})
+//BTN SEND MODIF
+$(document).on("click", ".send-modif", function(e){
+    let com = $(this).parents(".com").children(".text_com")
+    let json_arr = JSON.stringify({
+        'title': 'modif_com',
+        'id_com': $(this).parents(".com").attr("data-id-com"),
+        'content': com.text(),
+    });
+    $.ajax({
+        type: "post",
+        url: "../php/home/home_modif_com.php",
+        data:{
+            data: json_arr,
+        },
+        success: function (response) {
+            response = JSON.parse(response)
+            console.log(response[0])
+            if (response == "true"){
+                com.attr("contenteditable",false)
+                com.css("border", "none")
+                com.parents(".com").children(".send-modif").css("display", "none")
+            }
+        }
+    });
 })
