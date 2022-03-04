@@ -118,7 +118,6 @@ input[type=file] {
 
 .print_tweet:hover {
     background-color: rgba(240, 240, 240, 0.3);
-    position: relative;
 }
 
 .print_tweet div {
@@ -175,11 +174,27 @@ sub {
     margin-bottom: 2vh;
     border-radius: 20px;
     padding: 2vh 1vw;
+}
+.com, .print_tweet{
     position: relative;
 }
+
+
 /*btn_sppr*/
-.btn-del{
+.btn-del, .btn-del-tweet{
     position: absolute;
     top: .4rem;
     right: .4rem;
+    display: none;
+}
+
+/*btn_modif*/
+.btn-modif{
+    position: absolute;
+    top: .4rem;
+    right: 1.8rem;
+    display: none;
+}
+.send-modif{
+    display: none;
 }
