@@ -93,8 +93,12 @@ function check_user_id($username){
 function del_com($id_user, $com){
     return "DELETE FROM comments WHERE id_user = '$id_user' AND id= '$com'";
 }
-function del_tweet(){
-    return "DELETE FROM post INNER JOIN comments on post  ON WHERE ";
+function del_tweet($id){
+    return "DELETE FROM comments WHERE comments.id_post = '$id';
+    DELETE FROM comments WHERE comments.id_post = '$id';
+    DELETE FROM media WHERE media.id_post = '$id';
+    DELETE FROM retweet WHERE retweet.id_post = '$id';
+    DELETE FROM post WHERE post.id = '$id';";
 }
 
 // UPDATE
@@ -105,6 +109,6 @@ function com_update($id, $content){
 }
 function tweet_update($id, $content){
     return "UPDATE post 
-            SET comments.content = '$content'
-            WHERE comments.id = '$id'";
+            SET post.content = '$content'
+            WHERE post.id = '$id'";
 }
