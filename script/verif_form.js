@@ -38,11 +38,12 @@ $(document).ready(function () {
     inputValid($("#zipcode"))
     inputValid($("#gender"))
     inputValid($("#phone"))
+    inputValid($('#username'))
     inputValid($("#email"))
     inputValid($("#password"))
     inputValid($("#passwordConfirm"))
 
-    $('form').submit(function (e) {
+    $('#reg').submit(function (e) {
 
         if(
             inputValid($("#firstname")) &&
@@ -53,6 +54,7 @@ $(document).ready(function () {
             inputValid($("#zipcode")) &&
             inputValid($("#gender")) &&
             inputValid($("#phone")) &&
+            inputValid($('#username')) &&
             inputValid($("#email")) &&
             inputValid($("#password")) &&
             inputValid($("#passwordConfirm"))

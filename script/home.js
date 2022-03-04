@@ -1,30 +1,77 @@
-let li_reg = $("li:first-child")
-let li_reg_data = $(li_reg).attr("data-target")
-let li_log = $("li:last-child")
-let li_log_data = $(li_log).attr("data-target")
-
-$(document).ready(function () {
-    $(li_reg).css("background-color", "#1da1f2")
-    $(li_reg).css("color", "white")
-    $("#"+li_log_data).hide()
-});
-
-$(li_reg).on("click", function(){
-    $("#"+li_reg_data).show()
-    $(li_reg).css("background-color", "#1da1f2")
-    $(li_reg).css("color", "white")
-
-    $("#"+li_log_data).hide()
-    $(li_log).css("background-color", "white")
-    $(li_log).css("color", "black")
+/***** Preview img *****/
+$("#files").on("change", function(){
+    $("#img-container").empty()
+    let nbr_files = $(this)[0].files.length;
+    if (nbr_files == 0){
+        return false;
+    }
+    
+    for (let i = 0; i < this.files.length; i++) {
+        let url = URL.createObjectURL(this.files[i]);
+        let img = new Image();
+        
+        img.src = url;
+        $("#img-container").append(img);
+        
+        img.onload = function() {
+            URL.revokeObjectURL(this.src);
+        }
+    }
 })
 
-$(li_log).on("click", function(){
-    $("#"+li_log_data).show()
-    $(li_log).css("background-color", "#1da1f2")
-    $(li_log).css("color", "white")
+/***** check nbr carac tweet *****/
+$(document).on("keyup", "#tweet",function(e){
+    // check longueur txt
+    if($(this).text().length > 140){
+        $(this).css("color", "red")
+        $("#btn-tweet").attr("disabled", true)
+    }else{
+        $(this).css("color", "black")
+        $("#btn-tweet").attr("disabled", false)
+    }
+})
+    
+/***** check nbr carac com *****/
+$(document).on("keyup", ".comment",function(e){        
+    // check longueur txt
+    if($(this).text().length > 140){
+        $(this).css("color", "red")
+        $("#btn-tweet").attr("disabled", true)
+    }else{
+        $(this).css("color", "black")
+        $("#btn-tweet").attr("disabled", false)
+    }
+})
 
-    $("#"+li_reg_data).hide()
-    $(li_reg).css("background-color", "white")
-    $(li_reg).css("color", "black")
+/***** show coms *****/
+function dropDown(){
+    if(window.getComputedStyle(x).visibility === "hidden"){
+
+    } else {
+
+    }
+}
+let i = 0;
+$(document).on("click", ".img_comment", function(e){
+    i++
+    if (i%2==1) {
+        $(e.target).parents(".print_tweet").children(".comment_div").show();
+    } else {
+        $(e.target).parents(".print_tweet").children(".comment_div").hide();
+
+    }
+})
+
+/***** show option *****/
+$(document).on("mouseenter", ".print_tweet", function(e){
+    $(".btn-modif").show()
+    $(".btn-del").show()
+    $(".btn-del-tweet").show()
+})
+
+/***** hide option *****/
+$(document).on("mouseleave", ".print_tweet", function(e){
+    $(".btn-modif").hide()
+    $(".btn-del").hide()
+    $(".btn-del-tweet").hide()
 })

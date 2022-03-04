@@ -11,6 +11,7 @@ $("#reg").on("submit", function (e) {
         'zipcode': form.get('zipcode'),
         'gender': form.get('gender'),
         'phone': form.get('phone'),
+        'username' : form.get('username'),
         'email': form.get('email'),
         'password': form.get('password'),
         'passwordConfirm': form.get('passwordConfirm'),
@@ -26,29 +27,38 @@ $("#reg").on("submit", function (e) {
 
         success: function (response) {
             var parsedResponse = JSON.parse(response)
-
+            console.log(parsedResponse)
             if (parsedResponse['email'] == 0) {
                 $('#email').css('border', '#018749 3px solid')
-                $('#email_notValid').css('display', 'none')
+                $('#email_taken').css('display', 'none')
             }
             else {
                 $('#email').css('border', '#B31B1B 3px solid')
-                $('#email_notValid').css('display', 'block')
+                $('#email_taken').css('display', 'block')
             }
             if (parsedResponse['phone'] == 0) {
                 $('#phone').css('border', '#018749 3px solid')
-                $('#phone_notValid').css('display', 'none')
+                $('#phone_taken').css('display', 'none')
             }
             else {
                 $('#phone').css('border', '#B31B1B 3px solid')
-                $('#phone_notValid').css('display', 'block')
+                $('#phone_taken').css('display', 'block')
+            }
+            if (parsedResponse['username'] == 0) {
+                $('#username').css('border', '#018749 3px solid')
+                $('#username_taken').css('display', 'none')
+            }
+            else {
+                $('#username').css('border', '#B31B1B 3px solid')
+                $('#username_taken').css('display', 'block')
             }
             if (parsedResponse['msg'] == 'success') {
                 $('#email').css('border', '#018749 3px solid')
-                $('#email_notValid').css('display', 'none')
+                $('#email_taken').css('display', 'none')
                 $('#phone').css('border', '#018749 3px solid')
-                $('#phone_notValid').css('display', 'none')
-                $('#successful-registration').css('display', 'block')
+                $('#phone_taken').css('display', 'none')
+                $('#username').css('border', '#018749 3px solid')
+                $('#username_taken').css('display', 'none')
                 $('#reg input').val("")
                 $('#reg input').prop("disabled", "true")
                 $('#reg button').prop("disabled", "true")
@@ -56,5 +66,5 @@ $("#reg").on("submit", function (e) {
                 $('#register-success').css("visibility", "visible")
             }
         }
-    });
+    })
 })

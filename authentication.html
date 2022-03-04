@@ -86,13 +86,23 @@
                         <label>Phone</label>
                     </div>
                     <input class="w-full" type="tel" name="phone" id="phone" placeholder="0612345678" pattern="^[0-9]{10}">
+                    <p class="error_msg" id="phone_taken">This phone number is already used.</p>
+                </div>
+
+                <div class="col-span-2 mb-2">
+                    <div>
+                        <label>Username</label>
+                    </div>
+                    <input class="w-full" type="username" name="username" placeholder="Singed123" id="username" pattern="[\w]{2,}" autocomplete="username" required>
+                    <p class="error_msg" id="username_taken">This username is already taken.</p>
                 </div>
 
                 <div class="col-span-2 mb-2">
                     <div>
                         <label>Mail</label>
                     </div>
-                    <input class="w-full" type="email" name="email" placeholder="email@address.com" id="email" pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" autocomplete="username" required>
+                    <input class="w-full" type="email" name="email" placeholder="email@address.com" id="email" pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" required>
+                    <p class="error_msg" id="email_taken">This email address is already taken.</p>
                 </div>
 
                 <div class="mb-2">
