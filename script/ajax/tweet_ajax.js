@@ -18,10 +18,13 @@ $(document).ready(function (){
             for(let i = 0; i < response[0].length; i++){
                 $("#POST").append("<div class=\"print_tweet\" data_id=\""+response[0][i]["id"]+"\">"+
                                         "<div class=\"username\">"+
-                                            "<a href=\"\">"+response[0][i]["username"]+"</a>"+
+                                            "<a href=\"./profile.php?username="+response[0][i]["username"].substr(1)+"\">"+response[0][i]["username"]+"</a>"+
                                         "</div>"+
                                         "<div class=\"tweet-txt\">"+
                                             response[0][i]["content"]+
+                                        "</div>"+
+                                        "<div class=\"div-btn-modif\">"+
+                                            "<button class=\"btn-tweet send-modif\">Modif</button>"+
                                         "</div>"+
                                         "<div class=\"post_action\">"+
                                             "<div class=\"img_like\"> <img src=\"../img/like.png\" alt=\"like\"> </div>"+
@@ -49,7 +52,6 @@ $(document).ready(function (){
                 );
                 let modif = "[data_id="+response[0][i]["id"]+"]";
                 if(response[0][i]["id_user"] == parseInt(localStorage.getItem("id_user"))){
-                    // console.log("ENTRE")
                     $(modif).append(
                         "<button class=\"btn-del\">X</button>"+
                         "<button class=\"btn-modif\"><img src=\"../img/crayon.png\" alt=\"logo crayon\"></button>"+
@@ -244,9 +246,10 @@ $(document).on("click", ".img_repost",function(e){
     });
 })
 
-// BTN SUPPR
+// BTN SUPPR COM
 $(document).on("click", ".com .btn-del", function(e){
     let json_arr = JSON.stringify({
+        'title': "com",
         'id_com' : $(e.target).parent().attr("data-id-com"),
         'localStorage': localStorage.getItem("id_user"),
     });
@@ -267,7 +270,26 @@ $(document).on("click", ".com .btn-del", function(e){
 
         }
     });
+})
 
+// BTN SUPPR TWEET
+$(document).on("click", ".print_tweet .btn-del", function(e){
+    let tweet = $(e.target).parents(".print_tweet")
+    let json_arr = JSON.stringify({
+        'title': "tweet",
+        'id_tweet' : $(tweet).attr("data_id"),
+        'localStorage': localStorage.getItem("id_user"),
+    });
+    $.ajax({
+        type: "post",
+        url: "../php/home/home_del.php",
+        data: {
+            data:json_arr,
+        },
+        success: function (response) {
+            tweet.remove()
+        }
+    });
 })
 
 //BTN MODIF COM
@@ -280,23 +302,36 @@ $(document).on("click", ".com .btn-modif", function(e){
     com.css("border-radius", "10px")
 })
 
-//BTN MODIF COM
-$(document).on("click", ".com .btn-modif", function(e){
-    $(this).parents(".com").children(".send-modif").show()
-   
-    let com = $(this).parents(".com").children(".text_com")
-    com.attr("contenteditable",true)
+//BTN MODIF TWEET
+$(document).on("click", ".print_tweet .btn-modif", function(e){   
+    let btn_modif = $(e.target).parents(".print_tweet").children(".div-btn-modif").children(".send-modif").show()
+    let com = $(e.target).parents(".print_tweet").children(".tweet-txt")
+    com.attr("contenteditable", true)
     com.css("border", "1px solid rgba(200, 200, 200, .8)")
     com.css("border-radius", "10px")
 })
 //BTN SEND MODIF
 $(document).on("click", ".send-modif", function(e){
-    let com = $(this).parents(".com").children(".text_com")
+    let name = ""
+    let com = ""
+    let id = ""
+    let c = $(e.target).parents()[1]
+
+    if ($(c).hasClass("print_tweet")){
+        name = "modif_tweet"
+        com = $(c).children(".tweet-txt")
+        id = $(e.target).parents(".print_tweet").attr("data_id")
+    } else if ($(c).hasClass("res_com")){
+        name = "modif_com"
+        com = $(this).parents(".com").children(".text_com")
+        id = $(this).parents(".com").attr("data-id-com")
+    }
     let json_arr = JSON.stringify({
-        'title': 'modif_com',
-        'id_com': $(this).parents(".com").attr("data-id-com"),
+        'title': name,
+        'id_com': id ,
         'content': com.text(),
     });
+
     $.ajax({
         type: "post",
         url: "../php/home/home_modif_com.php",
@@ -305,8 +340,7 @@ $(document).on("click", ".send-modif", function(e){
         },
         success: function (response) {
             response = JSON.parse(response)
-            console.log(response[0])
-            if (response == "true"){
+            if (response[0] == "true"){
                 com.attr("contenteditable",false)
                 com.css("border", "none")
                 com.parents(".com").children(".send-modif").css("display", "none")
