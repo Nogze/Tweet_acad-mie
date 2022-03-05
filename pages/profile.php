@@ -17,10 +17,9 @@
 <body class="flex">
     <nav>
         <ul>
-            <li>Home</li>
-            <li>Hashtag</li>
-            <li>Messages</li>
-            <li>Profile</li>
+            <li><a href="./home.php">Home</a></li>
+            <li><a href="./mesagerie.php">Messages</a></li>
+            <li><a href="" id="profile">Profile</a></li>
         </ul>
     </nav>
     <main class="grid grid-cols-2">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="refresh" content="5"/> -->
+    <meta http-equiv="refresh" content="15"/> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../script/ajax/tweet_ajax.js" defer></script>
@@ -16,10 +16,9 @@
 <body class="flex">
     <nav>
         <ul>
-            <li>Home</li>
-            <li>Hashtag</li>
-            <li>Messages</li>
-            <li>Profile</li>
+            <li><a href="./home.php">Home</a></li>
+            <li><a href="">Messages</a></li>
+            <li><a href="" id="profile">Profile</a></li>
         </ul>
     </nav>
     <main class="grid grid-cols-2">
@@ -44,8 +43,14 @@
             <div class="text-center" id="POST"></div>
         </div>
         <div>
-            <div id="search">
-                <input type="text" placeholder="Search" id="search_input">
+            <div>
+                <div id="search">
+                    <input type="text" placeholder="Search" id="search_input">
+                </div>
+                <div id="result_search"></div>
+            </div>
+            <div id="print_rt">
+
             </div>
         </div>
     </main>

@@ -22,8 +22,9 @@ function add_like($user, $post){
 
 // RETWEET
 function check_retweet($user, $post){
-    return "SELECT id_user, id_post
+    return "SELECT id_user, id_post, users.username
             FROM retweet
+            INNER JOIN users ON users.id = retweet.id_user 
             WHERE id_user = \"".$user."\" AND id_post = \"".$post."\";";
 }
 function del_retweet($user, $post){
@@ -81,7 +82,7 @@ function print_comment(){
             ORDER BY creation_date DESC;";
 }
 function print_rt(){
-    return "SELECT * FROM retweet;";
+    return "SELECT * FROM retweet ORDER BY retweet.creation_date DESC;";
 }
 
 // CHECK
@@ -111,4 +112,9 @@ function tweet_update($id, $content){
     return "UPDATE post 
             SET post.content = '$content'
             WHERE post.id = '$id'";
+}
+
+//username
+function get_username($localStorage){
+    return "SELECT username FROM users WHERE id=$localStorage";
 }
