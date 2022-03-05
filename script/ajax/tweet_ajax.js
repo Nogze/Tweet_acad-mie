@@ -9,16 +9,18 @@ $(document).ready(function (){
         type: "post",
         url: "../php/home/home_print_tweet.php",
         data: {
-            data:"",
+            data: localStorage["id_user"],
         },
         success: function (response, textStatus, jqXHR) {
             response = JSON.parse(response)
-            console.log(response)
             let max = response[0].length+response[2].length
             let num_rt = 0
             let num_tweet = 0
             let date_tweet;
             let date_rt;
+            
+            $("#profile").attr("href", "./profile.php?username="+response[3][0]["username"].substr(1))
+
             for(let i = 0; i < max; i++){
                 date_tweet = new Date(response[0][num_tweet]["creation_date"])
                 if (num_rt < response[2].length){
@@ -344,6 +346,7 @@ $(document).on("click", ".send-modif", function(e){
     let com = ""
     let id = ""
     let c = $(e.target).parents()[1]
+    let btn_modif = $(e.target).parents(".print_tweet").children(".div-btn-modif").children(".send-modif")
 
     if ($(c).hasClass("print_tweet")){
         name = "modif_tweet"
@@ -372,6 +375,7 @@ $(document).on("click", ".send-modif", function(e){
                 com.attr("contenteditable",false)
                 com.css("border", "none")
                 com.parents(".com").children(".send-modif").css("display", "none")
+                btn_modif.hide()
             }
         }
     });
