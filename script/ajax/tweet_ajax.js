@@ -9,19 +9,42 @@ $(document).ready(function (){
         type: "post",
         url: "../php/home/home_print_tweet.php",
         data: {
-            data:"",
+            data: localStorage["id_user"],
         },
         success: function (response, textStatus, jqXHR) {
             response = JSON.parse(response)
-            // console.log(response)
+            let max = response[0].length+response[2].length
+            let num_rt = 0
+            let num_tweet = 0
+            let date_tweet;
+            let date_rt;
+            
+            $("#profile").attr("href", "./profile.php?username="+response[3][0]["username"].substr(1))
 
-            for(let i = 0; i < response[0].length; i++){
-                $("#POST").append("<div class=\"print_tweet\" data_id=\""+response[0][i]["id"]+"\">"+
+            for(let i = 0; i < max; i++){
+                date_tweet = new Date(response[0][num_tweet]["creation_date"])
+                if (num_rt < response[2].length){
+                    date_rt = new Date(response[2][num_rt]["creation_date"])
+                }
+
+                if(date_rt > date_tweet && num_rt < response[2].length){
+                    $("#POST").append(  "<div class=\"print_rt\" data-id-rt-tweet=\""+response[2][num_rt]["id_post"]+"\">"+
+                                            "<div class=\"username\">"+
+                                                "<a href=\"./profile.php?username="+response[0][num_rt]["username"].substr(1)+"\">"+response[0][num_rt]["username"]+"</a>"+
+                                            "</div>"+
+                                            "<div class=\"rt\">"+
+                                                "Has <a href=\"#"+response[2][num_rt]["id_post"]+"\" class=\"link_rt\">retweet</a>"+
+                                            "</div>"+
+                                        "</div>")
+                    num_rt++
+                    continue
+                }
+                $("#POST").append("<div class=\"print_tweet\" id=\""+response[0][num_tweet]["id"]+"\" data_id=\""+response[0][num_tweet]["id"]+"\">"+
                                         "<div class=\"username\">"+
-                                            "<a href=\"./profile.php?username="+response[0][i]["username"].substr(1)+"\">"+response[0][i]["username"]+"</a>"+
+                                            "<a href=\"./profile.php?username="+response[0][num_tweet]["username"].substr(1)+"\">"+response[0][num_tweet]["username"]+"</a>"+
                                         "</div>"+
                                         "<div class=\"tweet-txt\">"+
-                                            response[0][i]["content"]+
+                                            response[0][num_tweet]["content"]+
                                         "</div>"+
                                         "<div class=\"div-btn-modif\">"+
                                             "<button class=\"btn-tweet send-modif\">Modif</button>"+
@@ -32,13 +55,13 @@ $(document).ready(function (){
                                             "<div class=\"img_comment\"> <img src=\"../img/comment.png\" alt=\"comment\"> </div>"+
                                         "</div>"+
                                         "<div class=\"post_info\">"+
-                                            "<div class=\"likes\">"+ response[0][i]["nbr_likes"]+" likes</div>"+
-                                            "<div class=\"rt\">"+ response[0][i]["nbr_rt"]+" retweets</div>"+
-                                            "<div class=\"nbr_comment\">"+ response[0][i]["nbr_com"]+" comments</div>"+
+                                            "<div class=\"likes\">"+ response[0][num_tweet]["nbr_likes"]+" likes</div>"+
+                                            "<div class=\"rt\">"+ response[0][num_tweet]["nbr_rt"]+" retweets</div>"+
+                                            "<div class=\"nbr_comment\">"+ response[0][num_tweet]["nbr_com"]+" comments</div>"+
                                         "</div>"+
 
                                         "<div class=\"date\">"+
-                                            "<div><sup>Created : "+ response[0][i]["creation_date"]+"</sup></div>"+
+                                            "<div><sup>Created : "+ response[0][num_tweet]["creation_date"]+"</sup></div>"+
                                         "</div>"+
                                         "<div class=\"comment_div\">"+
                                             "<div class=\"comment\" contenteditable=\"true\" data-placeholder=\"Tweet your reply\"></div>"+
@@ -50,8 +73,8 @@ $(document).ready(function (){
                                         "</div>"+
                                  "</div>"
                 );
-                let modif = "[data_id="+response[0][i]["id"]+"]";
-                if(response[0][i]["id_user"] == parseInt(localStorage.getItem("id_user"))){
+                let modif = "[data_id="+response[0][num_tweet]["id"]+"]";
+                if(response[0][num_tweet]["id_user"] == parseInt(localStorage.getItem("id_user"))){
                     $(modif).append(
                         "<button class=\"btn-del-tweet\">X</button>"+
                         "<button class=\"btn-modif\"><img src=\"../img/crayon.png\" alt=\"logo crayon\"></button>"+
@@ -59,9 +82,9 @@ $(document).ready(function (){
                     )
                 }
 
-                if (response[0][i]["nbr_com"] >= 1){
-                    for(let idx = 0; idx < response[0][i]["nbr_com"];  idx++){
-                        if(response[0][i]["id"] == response[1][idx]["id_post"]){
+                if (response[0][num_tweet]["nbr_com"] >= 1){
+                    for(let idx = 0; idx < response[0][num_tweet]["nbr_com"];  idx++){
+                        if(response[0][num_tweet]["id"] == response[1][idx]["id_post"]){
                             $(modif+" .res_com").append("<div class=\"com\" data-id-com=\""+response[1][idx]["id"]+"\">"+
                                                             "<div class=\"username\">"+
                                                                 "<a href=\"\">"+response[1][idx]["username"]+"</a>"+
@@ -80,10 +103,10 @@ $(document).ready(function (){
                     }
                 }
 
-                if (String.valueOf(response[0][i]["edition_date"]) != null || String.valueOf(response[0][i]["edition_date"]) != "null"){
-                    $(modif+" .date").append("<div> <sup> Edited : "+ response[0][i]["edition_date"] + "</sup> </div>")
+                if (String.valueOf(response[0][num_tweet]["edition_date"]) != null || String.valueOf(response[0][num_tweet]["edition_date"]) != "null"){
+                    $(modif+" .date").append("<div> <sup> Edited : "+ response[0][num_tweet]["edition_date"] + "</sup> </div>")
                 }
-
+                num_tweet++
             }
         },
         error: function (xhr) {
@@ -167,7 +190,7 @@ $(document).on("click", ".btn_reply .btn-tweet", function(e){
             let post_com = $(e.target).parents(".print_tweet").attr("data_id");
             let com_text = $("[data_id="+post_com+"] .nbr_comment").text();
             let nbr_com = parseInt(com_text.split(" ")[0])
-            
+
             $(e.target).parent().remove()
             parseInt(nbr_com++)
             $("[data_id="+post_com+"] .nbr_comment").text(nbr_com + " comments")
@@ -234,11 +257,18 @@ $(document).on("click", ".img_repost",function(e){
             response = JSON.parse(response);
 
             if (response[0] == false){
-                console.log("IF")
                 parseInt(nbr_rt--)
+                $("#POST [data-id-rt-tweet="+post_rt+"]").remove()
             } else {
-                console.log("ELSE")
                 parseInt(nbr_rt++)
+                $("#POST").prepend(  "<div class=\"print_rt\" data-id-rt-tweet=\""+post_rt+"\">"+
+                                            "<div class=\"username\">"+
+                                                "<a href=\"./profile.php?username="+response[0].substr(1)+"\">"+response[0]+"</a>"+
+                                            "</div>"+
+                                            "<div class=\"rt\">"+
+                                                "Has <a href=\"#"+post_rt+"\" class=\"link_rt\">retweet</a>"+
+                                            "</div>"+
+                                        "</div>")
             }
 
             $("[data_id="+post_rt+"] .rt").text(nbr_rt + " retweets")
@@ -295,7 +325,7 @@ $(document).on("click", ".print_tweet .btn-del-tweet", function(e){
 //BTN MODIF COM
 $(document).on("click", ".com .btn-modif", function(e){
     $(this).parents(".com").children(".send-modif").show()
-   
+
     let com = $(this).parents(".com").children(".text_com")
     com.attr("contenteditable",true)
     com.css("border", "1px solid rgba(200, 200, 200, .8)")
@@ -303,7 +333,7 @@ $(document).on("click", ".com .btn-modif", function(e){
 })
 
 //BTN MODIF TWEET
-$(document).on("click", ".print_tweet .btn-modif", function(e){   
+$(document).on("click", ".print_tweet .btn-modif", function(e){
     let btn_modif = $(e.target).parents(".print_tweet").children(".div-btn-modif").children(".send-modif").show()
     let com = $(e.target).parents(".print_tweet").children(".tweet-txt")
     com.attr("contenteditable", true)
@@ -316,6 +346,7 @@ $(document).on("click", ".send-modif", function(e){
     let com = ""
     let id = ""
     let c = $(e.target).parents()[1]
+    let btn_modif = $(e.target).parents(".print_tweet").children(".div-btn-modif").children(".send-modif")
 
     if ($(c).hasClass("print_tweet")){
         name = "modif_tweet"
@@ -344,6 +375,7 @@ $(document).on("click", ".send-modif", function(e){
                 com.attr("contenteditable",false)
                 com.css("border", "none")
                 com.parents(".com").children(".send-modif").css("display", "none")
+                btn_modif.hide()
             }
         }
     });
