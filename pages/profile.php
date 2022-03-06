@@ -30,6 +30,7 @@
             <div id="search">
                 <input type="text" placeholder="Search" id="search_input">
             </div>
+            <div class="result_search"></div>
         </div>
     </main>
 </body>

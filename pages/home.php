@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="15"/> 
+    <!-- <meta http-equiv="refresh" content="15"/>  -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../script/ajax/tweet_ajax.js" defer></script>
     <script src="../script/home.js" defer></script>
+    <script src="../script/ajax/search_ajax.js" defer></script>
     <link rel="stylesheet" href="../style/home.css">
     <link rel="icon" href="../img/favicon.ico">
     <title>Home</title>
@@ -47,10 +48,7 @@
                 <div id="search">
                     <input type="text" placeholder="Search" id="search_input">
                 </div>
-                <div id="result_search"></div>
-            </div>
-            <div id="print_rt">
-
+                <div class="result_search"></div>
             </div>
         </div>
     </main>

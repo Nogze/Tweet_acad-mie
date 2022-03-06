@@ -118,3 +118,18 @@ function tweet_update($id, $content){
 function get_username($localStorage){
     return "SELECT username FROM users WHERE id=$localStorage";
 }
+
+//search
+function search_user($content){
+    return "SELECT username FROM users 
+    WHERE username LIKE '$content%'";
+}
+function search_hashtag($content){
+    return "SELECT 
+                hashtag.name,
+                post.*
+            FROM hashtag 
+            INNER JOIN post_hashtag ON post_hashtag.id_hashtag = hashtag.id
+            INNER JOIN post ON post_hashtag.id_post = post.id
+            WHERE hashtag.name LIKE '$content%';";
+}

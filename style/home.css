@@ -202,3 +202,11 @@ sub {
 .link_rt{
     color: #1da1f2;
 }
+
+.result_search{
+    padding: 0 .8rem;
+    background-color: rgb(204, 204, 204);
+    border-radius: 10px;
+    width: auto;
+    display: inline-block;
+}
